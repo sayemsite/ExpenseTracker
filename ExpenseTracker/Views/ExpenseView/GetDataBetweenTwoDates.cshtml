@@ -1,0 +1,56 @@
+﻿@model ExpenseTracker.Models.ViewModels.ExpenseVM
+
+@{
+    ViewData["Title"] = "GetDataBetweenTwoDates";
+}
+
+<h1>Expense Details Between Two Dates: </h1>
+
+<div>
+    <br/>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Expense.CatagoryModel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExpenseName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExpenseDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ExpenseList)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CatagoryModel.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ExpenseName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ExpenseDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Amount)
+                </td>
+
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
