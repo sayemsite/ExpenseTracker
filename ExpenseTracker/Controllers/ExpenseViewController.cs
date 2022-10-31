@@ -36,27 +36,56 @@ namespace ExpenseTracker.Controllers
         public IActionResult Index()
         {
             IEnumerable<Expense> objList = _context.Expenses;
+            double totalAmount = 0;
 
-            foreach (var obj in objList)
+            foreach (Expense expense in objList)
             {
-                obj.CatagoryModel = _context.Catagorys.FirstOrDefault(u => u.Id == obj.CatagoryId);
-                
+                expense.CatagoryModel = _context.Catagorys.FirstOrDefault(u => u.Id == expense.CatagoryId);
+                double amount = expense.Amount;
+                totalAmount = totalAmount + amount;
             }
-            
+
             ExpenseVM expenseVM = new ExpenseVM()
             {
-                Expense = new Expense(),
+                //Expense = new Expense(),
                 CatagoryDropDown = _context.Catagorys.Select(i => new SelectListItem
                 {
                     Text = i.Name,
                     Value = i.Id.ToString()
                 })
-             
+
             };
+
             expenseVM.ExpenseList = objList;
-           
+            expenseVM.TotalAmount = totalAmount;
             return View(expenseVM);
 
+        }
+
+        [HttpGet]
+        public IActionResult Search(ExpenseVM VM)
+        {
+            IEnumerable<Expense> ObjListFromToDate  = (from x in _context.Expenses where (x.CatagoryId == VM.Selected) && (x.ExpenseDate >= VM.FromDate) && (x.ExpenseDate <= VM.ToDate) select x).ToList();
+            double totalAmount = 0;
+            // to populate data in Expense.CatagoryModel
+            foreach (Expense expense in ObjListFromToDate)
+            {
+                expense.CatagoryModel = _context.Catagorys.FirstOrDefault(u => u.Id == VM.Selected);
+                double amount = expense.Amount;
+                totalAmount = totalAmount + amount;
+            }
+
+            // alternative and short-cut way - // to populate data in Expense.CatagoryModel
+            //var catagory_Model = (from x in _context.Catagorys where (x.Id == VM.Selected) select x);
+
+            ExpenseVM expenseVM = new ExpenseVM()
+            {
+
+            };
+
+            expenseVM.ExpenseList = ObjListFromToDate;
+            expenseVM.TotalAmount = totalAmount;
+            return View(expenseVM); 
         }
 
         // GET: ExpenseView
@@ -92,44 +121,6 @@ namespace ExpenseTracker.Controllers
             return dates.Where(x => x.Date.Between(ToDate, ToDate));
         }
 
-        // GET: ExpenseView/Create
-        public IActionResult GetDataBetweenTwoDates(ExpenseVM exView, DateTime FromDate, DateTime ToDate)
-        {
-            if (exView == null)
-            {
-                return NotFound();
-            }
-
-            IEnumerable<Expense> objList = _context.Expenses;
-           
-            foreach (var obj in objList)
-            {
-                obj.CatagoryModel = _context.Catagorys.FirstOrDefault(u => u.Id == obj.Id);
-
-            }
-
-            ExpenseVM expenseVM = new ExpenseVM()
-            {
-                Expense = new Expense(),
-                CatagoryDropDown = _context.Catagorys.Select(i => new SelectListItem
-                {
-                    Text = i.Name,
-                    Value = i.Id.ToString()
-                })
-
-            };
-
-            var Expenselist = from exp in _context.Expenses
-                              where exp.ExpenseDate == FromDate && exp.ExpenseDate == FromDate && exp.CatagoryId == exView.CatagoryId
-                              select exp;
-
-            expenseVM.ExpenseList = objList;
-
-            //return View(Expenselist);
-            return View(expenseVM);
-
-
-        }
         
         [HttpPost]
         [ValidateAntiForgeryToken]

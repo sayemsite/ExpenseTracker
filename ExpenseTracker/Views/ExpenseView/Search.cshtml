@@ -1,7 +1,7 @@
 ﻿@model ExpenseTracker.Models.ViewModels.ExpenseVM
 
 @{
-    ViewData["Title"] = "GetDataBetweenTwoDates";
+    ViewData["Title"] = "Search";
 }
 
 <h1>Expense Details Between Two Dates: </h1>
@@ -16,13 +16,13 @@
                 @Html.DisplayNameFor(model => model.Expense.CatagoryModel)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ExpenseName)
+                @Html.DisplayNameFor(model => model.Expense.ExpenseName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ExpenseDate)
+                @Html.DisplayNameFor(model => model.Expense.ExpenseDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Amount)
+                @Html.DisplayNameFor(model => model.Expense.Amount)
             </th>
 
             <th></th>
@@ -53,4 +53,38 @@
             </tr>
         }
     </tbody>
+    
+    <tr>
+        <td>
+          @*  @Html.DisplayNameFor(model => model.Expense.CatagoryModel)*@
+        </td>
+        <td>
+          @*  @Html.DisplayNameFor(model => model.Expense.ExpenseName)*@
+        </td>
+        <td>
+           @* @Html.DisplayNameFor(model => model.Expense.ExpenseDate)*@
+           Total Amount : 
+        </td>
+        <td>
+           @* @Html.DisplayNameFor(model => model.TotalAmount)*@
+            @Model.TotalAmount
+        </td>
+
+        <td></td>
+    </tr>
+
 </table>
+
+<div class="container">
+    <span>Total Expense List: @Model.ExpenseList.Count()</span>
+</div>
+
+<br/>
+
+<div>
+    @*<asp:Hyperlink Runat="server" NavigateUrl="#" onclick="javascript:history.go(1);return false;">
+        BACK<asp:Hyperlink>*@
+    @*<asp:button id="btnBack" runat="server" text="Back" xmlns:asp="#unknown" OnClientClick="JavaScript: window.history.back(1); return false;"> </asp:button>*@
+    <a href="javascript:history.go(-1)">Back</a>
+           
+</div>

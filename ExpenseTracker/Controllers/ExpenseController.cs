@@ -46,7 +46,7 @@ namespace ExpenseTracker.Controllers
 
             ExpenseVM expenseVM = new ExpenseVM()
             {
-                Expense = new Expense(),
+                //Expense = new Expense(),
                 CatagoryDropDown = _db.Catagorys.Select(i => new SelectListItem
                 {
                     Text = i.Name,

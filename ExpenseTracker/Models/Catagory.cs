@@ -18,6 +18,7 @@ namespace ExpenseTracker.Models
         [Key]
         public int Id { get; set; }
 
+        //[Remote("ExpenseCategoriesExists", "Catagory", HttpMethod = "POST", ErrorMessage = "Expense Category name already exists in database.")]
         [Required(ErrorMessage = "This field is required and Expense Catagory Name must be unique.")]
         [Column(TypeName = "varchar(30)")]
         [Display(Name = "Expense Catagory")]

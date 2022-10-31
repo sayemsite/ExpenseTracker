@@ -55,6 +55,16 @@
             </div>
         </div>
     </div>
+
+    <br/>
+   
+    <div>
+        @if (@TempData["CatagoryActionResult"] is not null)
+        {
+            <p class="font-weight-bold bg-danger text-black"> The Catagory Name "@TempData["newCatagoryName"]" exists in DB. Give a unique name. </p>
+        }
+    </div>
+    
 </form>
 
 @section Scripts{ 

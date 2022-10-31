@@ -1,5 +1,6 @@
 ﻿using ExpenseTracker.Data;
 using ExpenseTracker.Models;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -36,16 +37,26 @@ namespace ExpenseTracker.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Catagory obj)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _db.Catagorys.Add(obj);
-                _db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    _db.Catagorys.Add(obj);
+                    _db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                return View(obj);
             }
-            return View(obj);
-           
+            catch(Exception e)
+            {
+
+                TempData["CatagoryActionResult"] = e.InnerException.Message.ToString();
+                TempData["newCatagoryName"] = obj.Name.ToString();
+                return View();
+            }
         }
 
+        
 
         // GET Delete
         public IActionResult Delete(int? id)
